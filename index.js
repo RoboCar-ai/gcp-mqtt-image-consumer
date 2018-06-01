@@ -5,7 +5,7 @@
  * @param {!Function} The callback function.
  */
 const storage = require('@google-cloud/storage')();
-const {Image} = require('./models/Image_pb');
+const {Image} = require('./app/models/Image_pb');
 
 exports.subscribe = (event, callback) => {
   // The Cloud Pub/Sub Message object.

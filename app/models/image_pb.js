@@ -61,7 +61,8 @@ proto.data.Image.prototype.toObject = function(opt_includeInstance) {
 proto.data.Image.toObject = function(includeInstance, msg) {
   var f, obj = {
     name: jspb.Message.getField(msg, 1),
-    data: msg.getData_asB64()
+    data: msg.getData_asB64(),
+    telemetry: (f = msg.getTelemetry()) && proto.data.InputTelemetry.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -106,6 +107,11 @@ proto.data.Image.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setData(value);
       break;
+    case 3:
+      var value = new proto.data.InputTelemetry;
+      reader.readMessage(value,proto.data.InputTelemetry.deserializeBinaryFromReader);
+      msg.setTelemetry(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -147,6 +153,14 @@ proto.data.Image.serializeBinaryToWriter = function(message, writer) {
     writer.writeBytes(
       2,
       f
+    );
+  }
+  f = message.getTelemetry();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      proto.data.InputTelemetry.serializeBinaryToWriter
     );
   }
 };
@@ -231,6 +245,36 @@ proto.data.Image.prototype.clearData = function() {
  */
 proto.data.Image.prototype.hasData = function() {
   return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * required InputTelemetry telemetry = 3;
+ * @return {!proto.data.InputTelemetry}
+ */
+proto.data.Image.prototype.getTelemetry = function() {
+  return /** @type{!proto.data.InputTelemetry} */ (
+    jspb.Message.getWrapperField(this, proto.data.InputTelemetry, 3, 1));
+};
+
+
+/** @param {!proto.data.InputTelemetry} value */
+proto.data.Image.prototype.setTelemetry = function(value) {
+  jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+proto.data.Image.prototype.clearTelemetry = function() {
+  jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.data.Image.prototype.hasTelemetry = function() {
+  return jspb.Message.getField(this, 3) != null;
 };
 
 

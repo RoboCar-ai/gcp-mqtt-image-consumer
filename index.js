@@ -30,10 +30,12 @@ exports.subscribe = (event, callback) => {
   console.log(`file name ${name}`);
   const bucket = storage.bucket('sacred-reality-201417-mlengine');
   
+  const basePath;
+
   bucket.file('sessions/donkey.json').download().then(session => {
     const sessionData = JSON.parse(session.toString('utf8')).name;
 
-    const basePath = `data/${sessionData.name}-${sessionData.count}`;
+    basePath = `data/${sessionData.name}-${sessionData.count}`;
     const file = bucket.file(`${basePath}/${name}`);
     return file.save(imageData);
   })

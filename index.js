@@ -14,7 +14,7 @@ exports.subscribe = (event, callback) => {
   const b = Buffer.from(pubsubMessage.data, 'base64');
   const image = Image.deserializeBinary(Array.from(b));
   const name = image.getName();
-  const data = image.getData();
+  const imageData = image.getData();
   const telemetry = {
     mode: image.getTelemetry().getMode(),
     steeringAngle: image.getTelemetry().getSteeringAngle(),
@@ -30,14 +30,13 @@ exports.subscribe = (event, callback) => {
   console.log(`file name ${name}`);
   const bucket = storage.bucket('sacred-reality-201417-mlengine');
   
-  const session = bucket.file('session/donkey.json')
-  const file = bucket.file(`data/${name}`);
-  
-  session.download().then(data => {
-    const datasetName = JSON.parse(data.toString('utf8')).name;
-    filename = `data/${datasetName}/${telemetry.imageId}.json`;
-    return file.save(data)
+  bucket.file('session/donkey.json').then(session => {
+    const sessionData = JSON.parse(session.toString('utf8')).name;
+
+    const basePath = `data/${sessionData.name}-${sessionData.count}`;
+    const file = bucket.file(`${basePath}/${name}`);
+    return file.save(imageData);
   })
-  .then(_ => bucket.file(`data/${telemetry.imageId}.json`).save(JSON.stringify(telemetry)))
+  .then(_ => bucket.file(`${basePath}/${telemetry.imageId}.json`).save(JSON.stringify(telemetry)))
   .then(_ => callback()).catch(callback);
 };

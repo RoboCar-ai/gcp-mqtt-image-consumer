@@ -6,4 +6,11 @@ const filePath = 'sessions/donkey.json';
 
 const file = bucket.file(filePath);
 
-file.download().then(data => console.log(JSON.parse(data.toString('utf8')))).catch(console.log);
+file.download()
+.then(data => {
+    const sess = JSON.parse(data.toString('utf8'));
+    console.log(sess);
+    sess.status = 'active'
+    return file.save(JSON.stringify(sess));
+})
+.catch(console.log);
